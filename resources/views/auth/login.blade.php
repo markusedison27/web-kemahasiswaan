@@ -14,13 +14,15 @@
     <style>
         body {
             font-family: 'Outfit', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.06) 0%, transparent 50%),
+                        #f5f7fb;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            color: #f8fafc;
+            color: #334155;
         }
 
         .login-container {
@@ -29,18 +31,17 @@
         }
 
         .login-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.8);
             border-radius: 20px;
             padding: 2.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
         }
 
         .brand-logo {
             font-size: 2.2rem;
             font-weight: 800;
-            color: #fff;
+            color: #0f172a;
             text-align: center;
             margin-bottom: 0.5rem;
             display: flex;
@@ -50,41 +51,45 @@
         }
 
         .brand-logo i {
-            color: #38bdf8;
-            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+            color: #2563eb;
+            filter: drop-shadow(0 4px 6px rgba(37, 99, 235, 0.15));
         }
 
         .brand-logo span {
-            color: #38bdf8;
+            color: #2563eb;
         }
 
         .subtitle {
             text-align: center;
-            color: #94a3b8;
+            color: #64748b;
             font-size: 0.95rem;
             margin-bottom: 2rem;
         }
 
         .form-label {
             font-weight: 500;
-            color: #cbd5e1;
+            color: #475569;
             font-size: 0.9rem;
         }
 
         .form-control {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
             border-radius: 12px;
             padding: 0.75rem 1rem;
             transition: all 0.2s ease;
         }
 
         .form-control:focus {
-            background: rgba(15, 23, 42, 0.8);
-            border-color: #38bdf8;
-            color: #fff;
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+            background: #ffffff;
+            border-color: #2563eb;
+            color: #0f172a;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .form-control::placeholder {
+            color: #94a3b8;
         }
 
         .btn-login {
@@ -96,30 +101,32 @@
             border-radius: 12px;
             width: 100%;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
             margin-top: 1rem;
         }
 
         .btn-login:hover {
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
         }
 
         .security-badge {
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            border-radius: 10px;
-            padding: 0.6rem 1rem;
+            background: rgba(37, 99, 235, 0.04);
+            border: 1px solid rgba(37, 99, 235, 0.12);
+            color: #1e40af;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
             font-size: 0.8rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             margin-top: 1.5rem;
         }
 
-
+        .security-badge i {
+            color: #2563eb;
+        }
     </style>
 </head>
 <body>
@@ -128,14 +135,14 @@
         
         <div class="login-card">
             <div class="brand-logo">
-                <i class="bi bi-shield-fill-check"></i>
+                <i class="bi bi-shield-lock-fill"></i>
                 SIAKAD<span>SIBER</span>
             </div>
             <div class="subtitle">Sistem Informasi Akademik dengan Keamanan Siber</div>
 
             <!-- Validation & Session Alerts -->
             @if($errors->any())
-                <div class="alert alert-danger border-0 text-white bg-danger bg-opacity-75" style="border-radius: 10px; font-size: 0.85rem;">
+                <div class="alert alert-danger border-0 mb-3" style="border-radius: 12px; font-size: 0.85rem; background-color: #fee2e2; color: #991b1b;">
                     <ul class="mb-0 ps-3">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -145,13 +152,13 @@
             @endif
 
             @if(session('error'))
-                <div class="alert alert-danger border-0 text-white bg-danger bg-opacity-75" style="border-radius: 10px; font-size: 0.85rem;">
+                <div class="alert alert-danger border-0 mb-3" style="border-radius: 12px; font-size: 0.85rem; background-color: #fee2e2; color: #991b1b;">
                     {{ session('error') }}
                 </div>
             @endif
 
             @if(session('success'))
-                <div class="alert alert-success border-0 text-white bg-success bg-opacity-75" style="border-radius: 10px; font-size: 0.85rem;">
+                <div class="alert alert-success border-0 mb-3" style="border-radius: 12px; font-size: 0.85rem; background-color: #dcfce7; color: #166534;">
                     {{ session('success') }}
                 </div>
             @endif
@@ -184,7 +191,6 @@
                     <strong>Proteksi Keamanan:</strong> Laju percobaan login dibatasi (Rate Limited) untuk mencegah serangan brute force.
                 </div>
             </div>
-
 
         </div>
 
