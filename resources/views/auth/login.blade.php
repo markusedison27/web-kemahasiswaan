@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - SIMAWA Siber</title>
+    <title>Login - MYPOLBENG</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap 5.3.3 CSS -->
@@ -135,10 +135,10 @@
         
         <div class="login-card">
             <div class="brand-logo">
-                <i class="bi bi-shield-lock-fill"></i>
-                SIAKAD<span>SIBER</span>
+                <img src="{{ asset('logo_polbeng.jpg') }}" alt="Logo POLBENG" style="height: 48px; width: auto; object-fit: contain; margin-bottom: 5px;">
+                MY<span>POLBENG</span>
             </div>
-            <div class="subtitle">Sistem Informasi Akademik dengan Keamanan Siber</div>
+            <div class="subtitle">Sistem Informasi Akademik Politeknik Negeri Bengkalis</div>
 
             <!-- Validation & Session Alerts -->
             @if($errors->any())
@@ -167,7 +167,7 @@
                 @csrf
                 <div class="mb-3">
                     <label for="email" class="form-label">Alamat Email</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="nama@siakad.com" required value="{{ old('email') }}">
+                    <input type="email" name="email" id="email" class="form-control" placeholder="nama@polbeng.ac.id" required value="{{ old('email') }}">
                 </div>
 
                 <div class="mb-4">

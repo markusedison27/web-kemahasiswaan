@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'SIAKAD') - SIMAWA Siber</title>
+    <title>@yield('title', 'MYPOLBENG') - Politeknik Negeri Bengkalis</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap 5.3.3 CSS -->
@@ -245,8 +245,8 @@
     <!-- Sidebar Navigation -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <i class="bi bi-shield-lock-fill"></i>
-            <div>SIAKAD<span>SIBER</span></div>
+            <img src="{{ asset('logo_polbeng.jpg') }}" alt="Logo POLBENG" style="height: 36px; width: 36px; object-fit: cover; border-radius: 50%; margin-right: 10px; background-color: #ffffff; padding: 2px;">
+            <div>MY<span>POLBENG</span></div>
         </div>
 
         <ul class="nav-menu">

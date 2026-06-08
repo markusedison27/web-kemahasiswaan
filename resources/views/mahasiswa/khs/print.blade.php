@@ -70,8 +70,8 @@
         <!-- Header / Kop Surat -->
         <div class="header-print text-center">
             <h3 class="university-title mb-1">KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN</h3>
-            <h4 class="fw-bold mb-1">UNIVERSITAS SIAKAD SIBER YOGYAKARTA</h4>
-            <p class="text-muted mb-0">Jl. Ringroad Utara, Condongcatur, Sleman, Yogyakarta | Telp: (0274) 123456</p>
+            <h4 class="fw-bold mb-1">POLITEKNIK NEGERI BENGKALIS</h4>
+            <p class="text-muted mb-0">Jl. Bathin Alam, Sungai Alam, Bengkalis, Riau | Telp: (0766) 24566</p>
         </div>
 
         <div class="doc-title">KARTU HASIL STUDI (KHS)</div>
@@ -187,7 +187,7 @@
         <div class="row signature-section" style="font-size: 0.95rem;">
             <div class="col-8"></div>
             <div class="col-4 text-center">
-                <p class="mb-5">Yogyakarta, {{ date('d F Y') }}<br><strong>Wakil Dekan Bidang Akademik,</strong></p>
+                <p class="mb-5">Bengkalis, {{ date('d F Y') }}<br><strong>Wakil Direktur Bidang Akademik,</strong></p>
                 <p class="mb-0 fw-bold"><u>Dr. Ir. H. Hermawan, M.T.</u></p>
                 <small class="text-muted">NIP. 19741021 200212 1 002</small>
             </div>
