@@ -15,10 +15,18 @@ Route::get('/', function () {
 
 // Guest Routes
 Route::middleware('guest')->group(function () {
+    // Login
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/login/google', [AuthController::class, 'loginGoogle'])->name('login.google');
-    Route::get('/login/google/auth/{id}', [AuthController::class, 'loginGoogleAuth'])->name('login.google.auth');
+
+    // Registrasi
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+
+    // OTP Verification
+    Route::get('/login/otp', [AuthController::class, 'showOtp'])->name('login.otp');
+    Route::post('/login/otp/verify', [AuthController::class, 'verifyOtp'])->name('login.otp.verify');
+    Route::post('/login/otp/resend', [AuthController::class, 'resendOtp'])->name('login.otp.resend');
 });
 
 // Authenticated Routes
