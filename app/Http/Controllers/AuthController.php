@@ -71,6 +71,30 @@ class AuthController extends Controller
         ]);
     }
 
+    public function loginGoogle()
+    {
+        // Ambil semua user aktif untuk dipilih di Google Chooser
+        $users = \App\Models\User::where('status', 'active')->get();
+        return view('auth.google_chooser', compact('users'));
+    }
+
+    public function loginGoogleAuth(Request $request, $id)
+    {
+        $user = \App\Models\User::where('id', $id)->where('status', 'active')->first();
+
+        if ($user) {
+            Auth::login($user, true);
+            $request->session()->regenerate();
+
+            // Log activity
+            ActivityLogger::log('LOGIN_SUCCESS', "User {$user->name} ({$user->role}) berhasil masuk menggunakan Google.");
+
+            return redirect()->route('dashboard')->with('success', 'Berhasil masuk menggunakan Google!');
+        }
+
+        return redirect()->route('login')->with('error', 'Akun tidak valid atau dinonaktifkan.');
+    }
+
     public function logout(Request $request)
     {
         if (Auth::check()) {

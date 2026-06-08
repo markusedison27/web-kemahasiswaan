@@ -17,6 +17,8 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/login/google', [AuthController::class, 'loginGoogle'])->name('login.google');
+    Route::get('/login/google/auth/{id}', [AuthController::class, 'loginGoogleAuth'])->name('login.google.auth');
 });
 
 // Authenticated Routes
