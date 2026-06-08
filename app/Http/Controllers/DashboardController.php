@@ -36,8 +36,24 @@ class DashboardController extends Controller
 
         if ($user->isDosen()) {
             $dosen = $user->dosen;
+            
+            // Jika user dosen belum punya data profil dosen
             if (!$dosen) {
-                abort(404, 'Data Dosen tidak ditemukan.');
+                // Ambil daftar spesialisasi unik dari database sebagai pilihan
+                $spesialisasies = Dosen::select('spesialisasi')->whereNotNull('spesialisasi')->distinct()->pluck('spesialisasi');
+                
+                // Jika database kosong, berikan beberapa default
+                if ($spesialisasies->isEmpty()) {
+                    $spesialisasies = collect(['Rekayasa Perangkat Lunak', 'Kecerdasan Buatan', 'Jaringan Komputer', 'Keamanan Siber', 'Sistem Informasi', 'Ilmu Data', 'Lainnya']);
+                }
+
+                return view('dashboard.dosen', [
+                    'dosen' => null,
+                    'jadwal' => collect(),
+                    'totalMengajar' => 0,
+                    'needsProfile' => true,
+                    'spesialisasies' => $spesialisasies,
+                ]);
             }
 
             $jadwal = Jadwal::with('mataKuliah')
@@ -52,8 +68,25 @@ class DashboardController extends Controller
 
         if ($user->isMahasiswa()) {
             $mahasiswa = $user->mahasiswa;
+
+            // Jika user mahasiswa belum punya data profil mahasiswa
             if (!$mahasiswa) {
-                abort(404, 'Data Mahasiswa tidak ditemukan.');
+                // Ambil daftar jurusan unik dari database sebagai pilihan
+                $jurusans = Mahasiswa::select('jurusan')->whereNotNull('jurusan')->distinct()->pluck('jurusan');
+                
+                // Jika database masih kosong, berikan beberapa default Polbeng
+                if ($jurusans->isEmpty()) {
+                    $jurusans = collect(['Teknik Informatika', 'Sistem Informasi', 'Teknik Sipil', 'Teknik Mesin', 'Teknik Elektro', 'Administrasi Niaga', 'Bahasa Inggris', 'Kemaritiman']);
+                }
+
+                return view('dashboard.mahasiswa', [
+                    'mahasiswa'  => null,
+                    'totalSks'   => 0,
+                    'currentKrs' => collect(),
+                    'jadwal'     => collect(),
+                    'needsProfile' => true,
+                    'jurusans'   => $jurusans,
+                ]);
             }
 
             // Current KRS

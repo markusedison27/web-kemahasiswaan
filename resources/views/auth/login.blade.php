@@ -127,6 +127,51 @@
         .security-badge i {
             color: #2563eb;
         }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 1.25rem 0;
+            color: #94a3b8;
+            font-size: 0.82rem;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .btn-google {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 0.75rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+            color: #334155;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .btn-google:hover {
+            border-color: #4285F4;
+            background: #f8faff;
+            color: #1a1a2e;
+            box-shadow: 0 4px 12px rgba(66,133,244,0.15);
+            transform: translateY(-1px);
+        }
+        .btn-google img {
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 <body>
@@ -182,9 +227,15 @@
                     <label class="form-check-label text-muted" for="remember" style="font-size: 0.85rem;">Ingat Sesi Saya</label>
                 </div>
 
-                <button type="submit" class="btn btn-login">Masuk ke Sistem</button>
+                <button type="submit" class="btn btn-login" id="btnLogin">Masuk ke Sistem</button>
             </form>
 
+            <div class="divider">atau masuk dengan</div>
+
+            <a href="{{ route('auth.google') }}" class="btn-google" id="btnGoogle">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                Masuk dengan Google
+            </a>
 
             <div class="text-center mt-3">
                 <span style="font-size:0.85rem;color:#94a3b8;">Belum punya akun?</span>

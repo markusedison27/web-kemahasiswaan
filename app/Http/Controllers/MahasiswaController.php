@@ -15,9 +15,36 @@ class MahasiswaController extends Controller
     {
         $mahasiswa = Auth::user()->mahasiswa;
         if (!$mahasiswa) {
-            abort(404, 'Data Mahasiswa Anda tidak ditemukan.');
+            return false; // Return false instead of abort(404)
         }
         return $mahasiswa;
+    }
+
+    public function setupProfile(Request $request)
+    {
+        $validated = $request->validate([
+            'nim' => 'required|string|unique:mahasiswa,nim',
+            'jurusan' => 'required|string|max:100',
+            'angkatan' => 'required|integer|min:2000|max:' . (date('Y') + 1),
+            'telepon' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
+        ]);
+
+        $user = Auth::user();
+
+        Mahasiswa::create([
+            'user_id' => $user->id,
+            'nim' => $validated['nim'],
+            'nama' => $user->name, // Copy name from users table
+            'jurusan' => $validated['jurusan'],
+            'angkatan' => $validated['angkatan'],
+            'telepon' => $validated['telepon'],
+            'alamat' => $validated['alamat'],
+        ]);
+
+        ActivityLogger::log('PROFILE_SETUP', "Mahasiswa {$user->name} melengkapi profil dengan NIM: {$validated['nim']}");
+
+        return redirect()->route('dashboard')->with('success', 'Profil Anda berhasil disimpan! Semua fitur sekarang tersedia.');
     }
 
     // ==========================================
@@ -26,6 +53,9 @@ class MahasiswaController extends Controller
     public function krsList()
     {
         $mahasiswa = $this->getMahasiswa();
+        if (!$mahasiswa) {
+            return redirect()->route('dashboard')->with('error', 'Profil Anda belum lengkap. Silakan hubungi Admin untuk melengkapi data mahasiswa Anda sebelum mengakses KRS.');
+        }
 
         $krs = Krs::with(['mataKuliah', 'nilai'])
             ->where('mahasiswa_id', $mahasiswa->id)
@@ -45,6 +75,9 @@ class MahasiswaController extends Controller
     public function krsStore(Request $request)
     {
         $mahasiswa = $this->getMahasiswa();
+        if (!$mahasiswa) {
+            return redirect()->route('dashboard')->with('error', 'Profil Anda belum lengkap.');
+        }
 
         $validated = $request->validate([
             'mata_kuliah_id' => 'required|exists:mata_kuliah,id',
@@ -78,6 +111,9 @@ class MahasiswaController extends Controller
     public function krsDelete($id)
     {
         $mahasiswa = $this->getMahasiswa();
+        if (!$mahasiswa) {
+            return redirect()->route('dashboard')->with('error', 'Profil Anda belum lengkap.');
+        }
         $krs = Krs::where('mahasiswa_id', $mahasiswa->id)->findOrFail($id);
 
         $mk = $krs->mataKuliah;
@@ -93,6 +129,9 @@ class MahasiswaController extends Controller
     public function khsList()
     {
         $mahasiswa = $this->getMahasiswa();
+        if (!$mahasiswa) {
+            return redirect()->route('dashboard')->with('error', 'Profil Anda belum lengkap. Silakan hubungi Admin untuk melengkapi data mahasiswa Anda sebelum mengakses KHS.');
+        }
 
         // Get KRS that are approved and have scores
         $khs = Krs::with(['mataKuliah', 'nilai.dosen'])
@@ -129,6 +168,9 @@ class MahasiswaController extends Controller
     public function khsPrint()
     {
         $mahasiswa = $this->getMahasiswa();
+        if (!$mahasiswa) {
+            return redirect()->route('dashboard')->with('error', 'Profil Anda belum lengkap.');
+        }
 
         $khs = Krs::with(['mataKuliah', 'nilai.dosen'])
             ->where('mahasiswa_id', $mahasiswa->id)

@@ -171,6 +171,33 @@
         }
 
         .invalid-feedback { font-size: 0.8rem; }
+
+        .btn-google {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 0.75rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+            color: #334155;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 0;
+        }
+        .btn-google:hover {
+            border-color: #4285F4;
+            background: #f8faff;
+            color: #1a1a2e;
+            box-shadow: 0 4px 12px rgba(66,133,244,0.15);
+            transform: translateY(-1px);
+        }
+        .btn-google img { width: 20px; height: 20px; }
     </style>
 </head>
 <body>
@@ -271,10 +298,17 @@
                 <div id="matchMsg" style="font-size:0.78rem;margin-top:4px;display:none;"></div>
             </div>
 
-            <button type="submit" class="btn btn-register">
-                <i class="bi bi-person-plus me-2"></i>Buat Akun
+            <button type="submit" class="btn btn-register" id="btnRegister">
+                <i class="bi bi-person-plus me-2"></i>Buat Akun &amp; Verifikasi via Email
             </button>
         </form>
+
+        <div class="divider">atau daftar dengan</div>
+
+        <a href="{{ route('auth.google') }}" class="btn-google" id="btnGoogleRegister">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+            Daftar dengan Google
+        </a>
 
         <div class="divider">sudah punya akun?</div>
 

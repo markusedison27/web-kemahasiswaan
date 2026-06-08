@@ -301,25 +301,29 @@
                     </a>
                 </li>
             @elseif(Auth::user()->isDosen())
-                <li class="nav-menu-item {{ Route::is('dosen.classes*') || Route::is('dosen.grades*') ? 'active' : '' }}">
-                    <a href="{{ route('dosen.classes') }}">
-                        <i class="bi bi-mortarboard-fill"></i>
-                        Kelas Mengajar
-                    </a>
-                </li>
+                @if(Auth::user()->dosen)
+                    <li class="nav-menu-item {{ Route::is('dosen.classes*') || Route::is('dosen.grades*') ? 'active' : '' }}">
+                        <a href="{{ route('dosen.classes') }}">
+                            <i class="bi bi-mortarboard-fill"></i>
+                            Kelas Mengajar
+                        </a>
+                    </li>
+                @endif
             @elseif(Auth::user()->isMahasiswa())
-                <li class="nav-menu-item {{ Route::is('mahasiswa.krs*') ? 'active' : '' }}">
-                    <a href="{{ route('mahasiswa.krs') }}">
-                        <i class="bi bi-file-earmark-text-fill"></i>
-                        Isi KRS
-                    </a>
-                </li>
-                <li class="nav-menu-item {{ Route::is('mahasiswa.khs*') ? 'active' : '' }}">
-                    <a href="{{ route('mahasiswa.khs') }}">
-                        <i class="bi bi-award-fill"></i>
-                        KHS / Nilai
-                    </a>
-                </li>
+                @if(Auth::user()->mahasiswa)
+                    <li class="nav-menu-item {{ Route::is('mahasiswa.krs*') ? 'active' : '' }}">
+                        <a href="{{ route('mahasiswa.krs') }}">
+                            <i class="bi bi-file-earmark-text-fill"></i>
+                            Isi KRS
+                        </a>
+                    </li>
+                    <li class="nav-menu-item {{ Route::is('mahasiswa.khs*') ? 'active' : '' }}">
+                        <a href="{{ route('mahasiswa.khs') }}">
+                            <i class="bi bi-award-fill"></i>
+                            KHS / Nilai
+                        </a>
+                    </li>
+                @endif
             @endif
         </ul>
 

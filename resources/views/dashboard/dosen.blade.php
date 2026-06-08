@@ -4,6 +4,56 @@
 @section('page_title', 'Dashboard Dosen')
 
 @section('content')
+@if(!$dosen)
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="glass-card text-center py-5">
+            <div class="user-avatar mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+            </div>
+            <h4 class="fw-bold mb-2">Selamat Datang, {{ Auth::user()->name }}! 🎉</h4>
+            <p class="text-muted mb-4">Akun Dosen Anda telah berhasil diverifikasi dan aktif.</p>
+
+            <form action="{{ route('dosen.profile.setup') }}" method="POST" class="text-start mt-4 bg-light p-4 rounded-4 shadow-sm mx-auto" style="max-width: 500px;">
+                @csrf
+                <div class="mb-3">
+                    <label class="form-label fw-bold">NIDN</label>
+                    <input type="text" name="nidn" class="form-control" required placeholder="Contoh: 0011223344" value="{{ old('nidn') }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Spesialisasi / Bidang Ilmu</label>
+                    <select name="spesialisasi" class="form-select" required>
+                        <option value="" disabled selected>Pilih Bidang Ilmu Anda</option>
+                        @foreach($spesialisasies as $s)
+                            <option value="{{ $s }}" {{ old('spesialisasi') == $s ? 'selected' : '' }}>{{ $s }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nomor Telepon</label>
+                    <input type="text" name="telepon" class="form-control" placeholder="Opsional" value="{{ old('telepon') }}">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Alamat Lengkap</label>
+                    <textarea name="alamat" class="form-control" rows="2" placeholder="Opsional">{{ old('alamat') }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-custom-primary w-100 py-2 fw-bold">
+                    <i class="bi bi-save2 me-2"></i>Simpan Profil & Buka Fitur
+                </button>
+            </form>
+
+            <div class="mt-4">
+                <span class="badge bg-success px-3 py-2" style="border-radius: 20px;">
+                    <i class="bi bi-check-circle me-1"></i>Akun Aktif
+                </span>
+                <span class="badge bg-info px-3 py-2 ms-2" style="border-radius: 20px;">
+                    <i class="bi bi-person-workspace me-1"></i>Role: Dosen
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+@else
 <div class="row">
     <!-- Profile Card -->
     <div class="col-md-4 mb-4">
@@ -77,4 +127,5 @@
         </div>
     </div>
 </div>
+@endif
 @endsection

@@ -15,14 +15,42 @@ class DosenController extends Controller
     {
         $dosen = Auth::user()->dosen;
         if (!$dosen) {
-            abort(404, 'Data Dosen Anda tidak ditemukan.');
+            return false; // Return false instead of abort(404)
         }
         return $dosen;
+    }
+
+    public function setupProfile(Request $request)
+    {
+        $validated = $request->validate([
+            'nidn' => 'required|string|unique:dosen,nidn',
+            'spesialisasi' => 'required|string|max:100',
+            'telepon' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
+        ]);
+
+        $user = Auth::user();
+
+        Dosen::create([
+            'user_id' => $user->id,
+            'nidn' => $validated['nidn'],
+            'nama' => $user->name, // Copy name from users table
+            'spesialisasi' => $validated['spesialisasi'],
+            'telepon' => $validated['telepon'],
+            'alamat' => $validated['alamat'],
+        ]);
+
+        ActivityLogger::log('PROFILE_SETUP', "Dosen {$user->name} melengkapi profil dengan NIDN: {$validated['nidn']}");
+
+        return redirect()->route('dashboard')->with('success', 'Profil Dosen Anda berhasil disimpan! Semua fitur sekarang tersedia.');
     }
 
     public function classes()
     {
         $dosen = $this->getDosen();
+        if (!$dosen) {
+            return redirect()->route('dashboard')->with('error', 'Profil Dosen Anda belum lengkap. Silakan hubungi Admin untuk melengkapi data dosen Anda.');
+        }
 
         // Get unique courses from teaching schedule
         $classes = \App\Models\Jadwal::with('mataKuliah')
@@ -36,6 +64,9 @@ class DosenController extends Controller
     public function studentGrades($courseId)
     {
         $dosen = $this->getDosen();
+        if (!$dosen) {
+            return redirect()->route('dashboard')->with('error', 'Profil Dosen Anda belum lengkap.');
+        }
         $course = \App\Models\MataKuliah::findOrFail($courseId);
 
         // Verify lecturer teaches this course
@@ -59,6 +90,9 @@ class DosenController extends Controller
     public function storeGrade(Request $request, $krsId)
     {
         $dosen = $this->getDosen();
+        if (!$dosen) {
+            return redirect()->route('dashboard')->with('error', 'Profil Dosen Anda belum lengkap.');
+        }
         $krs = Krs::with('mahasiswa', 'mataKuliah')->findOrFail($krsId);
 
         // Verify lecturer teaches this course

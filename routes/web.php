@@ -23,11 +23,22 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 
-    // OTP Verification
+    // OTP Verification (Login)
     Route::get('/login/otp', [AuthController::class, 'showOtp'])->name('login.otp');
     Route::post('/login/otp/verify', [AuthController::class, 'verifyOtp'])->name('login.otp.verify');
     Route::post('/login/otp/resend', [AuthController::class, 'resendOtp'])->name('login.otp.resend');
+
+    // OTP Verification (Register)
+    Route::get('/register/otp', [AuthController::class, 'showRegisterOtp'])->name('register.otp');
+    Route::post('/register/otp/verify', [AuthController::class, 'verifyRegisterOtp'])->name('register.otp.verify');
+    Route::post('/register/otp/resend', [AuthController::class, 'resendRegisterOtp'])->name('register.otp.resend');
+
+    // Google OAuth (redirect only — callback is outside guest middleware)
+    Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 });
+
+// Google OAuth callback (diluar guest middleware agar tidak di-redirect)
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
@@ -80,23 +91,21 @@ Route::middleware('auth')->group(function () {
 
     // ==========================================
     // DOSEN ROLE ONLY ROUTES
-    // ==========================================
+    // ==========================================    // Dosen Routes
     Route::middleware('role:dosen')->prefix('dosen')->name('dosen.')->group(function () {
+        Route::post('/profile/setup', [DosenController::class, 'setupProfile'])->name('profile.setup');
         Route::get('/classes', [DosenController::class, 'classes'])->name('classes');
         Route::get('/classes/{courseId}/grades', [DosenController::class, 'studentGrades'])->name('grades');
         Route::post('/grades/{krsId}', [DosenController::class, 'storeGrade'])->name('grades.store');
     });
 
-    // ==========================================
-    // MAHASISWA ROLE ONLY ROUTES
-    // ==========================================
+    // Mahasiswa Routes
     Route::middleware('role:mahasiswa')->prefix('mahasiswa')->name('mahasiswa.')->group(function () {
-        // KRS
+        Route::post('/profile/setup', [MahasiswaController::class, 'setupProfile'])->name('profile.setup');
         Route::get('/krs', [MahasiswaController::class, 'krsList'])->name('krs');
         Route::post('/krs', [MahasiswaController::class, 'krsStore'])->name('krs.store');
         Route::post('/krs/{id}/delete', [MahasiswaController::class, 'krsDelete'])->name('krs.delete');
-
-        // KHS
+        
         Route::get('/khs', [MahasiswaController::class, 'khsList'])->name('khs');
         Route::get('/khs/print', [MahasiswaController::class, 'khsPrint'])->name('khs.print');
     });

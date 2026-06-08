@@ -4,6 +4,61 @@
 @section('page_title', 'Dashboard Mahasiswa')
 
 @section('content')
+@if(!$mahasiswa)
+{{-- User mahasiswa baru yang belum punya data profil --}}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="glass-card text-center py-5">
+            <div class="user-avatar mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+            </div>
+            <h4 class="fw-bold mb-2">Selamat Datang, {{ Auth::user()->name }}! 🎉</h4>
+            <p class="text-muted mb-4">Akun Anda telah berhasil diverifikasi dan aktif.</p>
+
+            <form action="{{ route('mahasiswa.profile.setup') }}" method="POST" class="text-start mt-4 bg-light p-4 rounded-4 shadow-sm mx-auto" style="max-width: 500px;">
+                @csrf
+                <div class="mb-3">
+                    <label class="form-label fw-bold">NIM</label>
+                    <input type="text" name="nim" class="form-control" required placeholder="Contoh: 12345678" value="{{ old('nim') }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Jurusan</label>
+                    <select name="jurusan" class="form-select" required>
+                        <option value="" disabled selected>Pilih Jurusan Anda</option>
+                        @foreach($jurusans as $j)
+                            <option value="{{ $j }}" {{ old('jurusan') == $j ? 'selected' : '' }}>{{ $j }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Tahun Angkatan</label>
+                    <input type="number" name="angkatan" class="form-control" required placeholder="Contoh: {{ date('Y') }}" value="{{ old('angkatan') ?? date('Y') }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nomor Telepon</label>
+                    <input type="text" name="telepon" class="form-control" placeholder="Opsional" value="{{ old('telepon') }}">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Alamat Lengkap</label>
+                    <textarea name="alamat" class="form-control" rows="2" placeholder="Opsional">{{ old('alamat') }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-custom-primary w-100 py-2 fw-bold">
+                    <i class="bi bi-save2 me-2"></i>Simpan Profil & Buka Fitur
+                </button>
+            </form>
+
+            <div class="mt-4">
+                <span class="badge bg-success px-3 py-2" style="border-radius: 20px;">
+                    <i class="bi bi-check-circle me-1"></i>Akun Aktif
+                </span>
+                <span class="badge bg-primary px-3 py-2 ms-2" style="border-radius: 20px;">
+                    <i class="bi bi-person me-1"></i>Role: Mahasiswa
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+@else
 <div class="row">
     <!-- Profile Card -->
     <div class="col-md-4 mb-4">
@@ -77,4 +132,5 @@
         </div>
     </div>
 </div>
+@endif
 @endsection
